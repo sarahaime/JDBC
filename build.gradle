@@ -14,4 +14,5 @@ dependencies {
 
     //Libreria Spark
     compile "com.sparkjava:spark-core:2.7.2"
+    compile 'com.h2database:h2:1.4.191'
 }
