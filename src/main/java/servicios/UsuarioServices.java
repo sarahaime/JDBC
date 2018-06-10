@@ -86,19 +86,18 @@ public class UsuarioServices {
 
     public boolean crearUsuario(Usuario usuario){
         boolean ok =false;
-
         Connection con = null;
         try {
 
-            String query = "insert into Usuario(nombre, USERNAME, PASSWORD, ADMINISTRADOR, AUTOR) values(?,?,?,?,?)";
+            String query = "insert into Usuario(NOMBRE, USERNAME, PASSWORD, ADMINISTRADOR, AUTOR) values(?,?,?,?,?)";
             con = DB.getInstancia().getConexion();
             //
             PreparedStatement prepareStatement = con.prepareStatement(query);
             //Antes de ejecutar seteo los parametros
-            prepareStatement.setString(2, usuario.getNombre());
-            prepareStatement.setString(3, usuario.getUsername());
-            prepareStatement.setString(4, usuario.getPassword());
-            prepareStatement.setBoolean(5, usuario.isAdministrador());
+            prepareStatement.setString(1, usuario.getNombre());
+            prepareStatement.setString(2, usuario.getUsername());
+            prepareStatement.setString(3, usuario.getPassword());
+            prepareStatement.setBoolean(4, usuario.isAdministrador());
             prepareStatement.setBoolean(5, usuario.isAutor());
             //
             int fila = prepareStatement.executeUpdate();
@@ -128,13 +127,13 @@ public class UsuarioServices {
             //
             PreparedStatement prepareStatement = con.prepareStatement(query);
             //Antes de ejecutar seteo los parametros.
-            prepareStatement.setString(2, usuario.getNombre());
-            prepareStatement.setString(3, usuario.getUsername());
-            prepareStatement.setString(4, usuario.getPassword());
-            prepareStatement.setBoolean(5, usuario.isAdministrador());
+            prepareStatement.setString(1, usuario.getNombre());
+            prepareStatement.setString(2, usuario.getUsername());
+            prepareStatement.setString(3, usuario.getPassword());
+            prepareStatement.setBoolean(4, usuario.isAdministrador());
             prepareStatement.setBoolean(5, usuario.isAutor());
             //Indica el where...
-            prepareStatement.setLong(5, usuario.getId());
+            prepareStatement.setLong(6, usuario.getId());
             //
             int fila = prepareStatement.executeUpdate();
             ok = fila > 0 ;
@@ -183,4 +182,6 @@ public class UsuarioServices {
     }
 
 
+    public UsuarioServices() {
+    }
 }

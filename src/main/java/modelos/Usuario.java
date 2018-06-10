@@ -37,7 +37,7 @@ public class Usuario {
     }
 
     public void setAdministrador(boolean administrador) {
-        administrador = administrador;
+        this.administrador = administrador;
     }
 
     public boolean isAutor() {
@@ -45,7 +45,7 @@ public class Usuario {
     }
 
     public void setAutor(boolean autor) {
-        autor = autor;
+        this.autor = autor;
     }
 
     public long getId() {
