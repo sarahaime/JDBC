@@ -25,7 +25,7 @@ public class UsuarioServices {
             ResultSet rs = prepareStatement.executeQuery();
             while(rs.next()){
                 Usuario usuario = new Usuario();
-                usuario.setId(rs.getInt("id"));
+                usuario.setId(rs.getLong("id"));
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setUsername(rs.getString("username"));
                 usuario.setPassword(rs.getString("password"));
@@ -48,7 +48,7 @@ public class UsuarioServices {
         return lista;
     }
 
-    public Usuario getUsuario(long id) {
+    public static Usuario getUsuario(long id) {
         Usuario usuario = null;
         Connection con = null;
         try {
@@ -63,7 +63,7 @@ public class UsuarioServices {
             ResultSet rs = prepareStatement.executeQuery();
             while(rs.next()){
                 usuario = new Usuario();
-                usuario.setId(rs.getInt("id"));
+                usuario.setId(rs.getLong("id"));
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setUsername(rs.getString("username"));
                 usuario.setPassword(rs.getString("password"));
@@ -181,7 +181,4 @@ public class UsuarioServices {
         return ok;
     }
 
-
-    public UsuarioServices() {
-    }
 }

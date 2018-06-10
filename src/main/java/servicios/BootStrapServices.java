@@ -30,10 +30,9 @@ public class BootStrapServices {
                 "  NOMBRE VARCHAR(100) NOT NULL,\n" +
                 "  USERNAME VARCHAR(100) NOT NULL,\n" +
                 "  PASSWORD VARCHAR(100) NOT NULL,\n" +
-                "  ADMINISTRADOR BOOLEAN,\n" +
-                "  AUTOR BOOLEAN,\n" +
+                "  ADMINISTRADOR BOOLEAN DEFAULT false ,\n" +
+                "  AUTOR BOOLEAN DEFAULT false,\n" +
                 ");";
-
 
         String tablaArticulo = "CREATE TABLE IF NOT EXISTS ARTICULO\n" +
                 "(\n" +
@@ -57,30 +56,22 @@ public class BootStrapServices {
                 "(\n" +
                 "  ID BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL,\n" +
                 "  ETIQUETA VARCHAR(80) NOT NULL,\n" +
-                "  IDARTICULO BIGINT NOT NULL\n" +
+                ");";
+
+        String relacionEtiquetaArticulo = "CREATE TABLE IF NOT EXISTS ETIQUETA_ARTICULO\n" +
+                "(\n" +
+                "  ETIQUETAID BIGINT NOT NULL,\n" +
+                "  ARTICULOID BIGINT NOT NULL\n" +
                 ");";
 
         statement.execute(tablaUsuario);
         statement.execute(tablaEtiqueta);
         statement.execute(tablaComentario);
         statement.execute(tablaArticulo);
+        statement.execute(relacionEtiquetaArticulo);
         statement.close();
         //CIERRO, MUY IMPORTANTE
         con.close();
-
-        //usuario administrador por defecto
-        UsuarioServices usuarioServices = new UsuarioServices();
-        if(usuarioServices.listaUsuarios().size() < 1){
-            Usuario administrador = new Usuario();
-            administrador.setNombre("Admin");
-            administrador.setUsername("admin");
-            administrador.setAdministrador(true);
-            administrador.setAutor(false);
-            administrador.setPassword("admin");
-            if( usuarioServices.crearUsuario(administrador)){
-                System.out.println("Usuario administrador creado..");
-            }
-        }
     }
 
 }
