@@ -14,7 +14,7 @@ public class Filtros { //para aplicar filtros
         /**
          * Se ejecuta antes de un request. Podemos modificar las llamada.
          */
-        before("/crearUsuario/*",(request, response) -> {
+        before("/usuario/crear/",(request, response) -> {
             Usuario usuario = request.session(true).attribute("usuario");
             if(usuario==null || !usuario.isAdministrador()){
                 //parada del request, enviando un codigo.
@@ -22,7 +22,23 @@ public class Filtros { //para aplicar filtros
             }
         });
 
-        before("/crearArticulo/*",(request, response) -> {
+        before("/usuario/lista/",(request, response) -> {
+            Usuario usuario = request.session(true).attribute("usuario");
+            if(usuario==null || !usuario.isAdministrador()){
+                //parada del request, enviando un codigo.
+                halt(401, "No tiene permisos para acceder");
+            }
+        });
+
+        before("/usuario/eliminar/*",(request, response) -> {
+            Usuario usuario = request.session(true).attribute("usuario");
+            if(usuario==null || !usuario.isAdministrador()){
+                //parada del request, enviando un codigo.
+                halt(401, "No tiene permisos para acceder");
+            }
+        });
+
+        before("/articulo/crear/*",(request, response) -> {
             Usuario usuario = request.session(true).attribute("usuario");
             if(usuario==null || (  !usuario.isAdministrador() &&  !usuario.isAutor()  )){
                 //parada del request, enviando un codigo.
@@ -31,7 +47,7 @@ public class Filtros { //para aplicar filtros
         });
 
 
-        before("/modificarArticulo/*",(request, response) -> {
+        before("/articulo/modificar/*",(request, response) -> {
             Usuario usuario = request.session(true).attribute("usuario");
             if(usuario==null || (  !usuario.isAdministrador() &&  !usuario.isAutor()  )){
                 //parada del request, enviando un codigo.

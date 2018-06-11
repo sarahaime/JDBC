@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/JDBC.iml" filepath="$PROJECT_DIR$/JDBC.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/JDBC_main.iml" filepath="$PROJECT_DIR$/.idea/modules/JDBC_main.iml" group="JDBC" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/JDBC_test.iml" filepath="$PROJECT_DIR$/.idea/modules/JDBC_test.iml" group="JDBC" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/web-JDBC_main.iml" filepath="$PROJECT_DIR$/.idea/modules/web-JDBC_main.iml" group="JDBC" />
     </modules>
   </component>
 </project>
