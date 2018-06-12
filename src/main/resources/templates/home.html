@@ -40,7 +40,7 @@
             <a class="nav-link" href="/logout"> <i class="fa fa-fw fa-sign-out"></i>Salir</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/registrar.html"></i>Registrar</a>
+            <a class="nav-link" href="/registrar"></i>Registrar</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/nuevoArticulo.html"></i>Postear</a>
@@ -58,7 +58,7 @@
         <!-- Blog Entries Column -->
         <div class="col-md-8">
 
-          <h1 class="my-4">El Blog
+          <h1 class="my-4">
             <small>La libertad está en leer</small>
           </h1>
 
@@ -66,12 +66,12 @@
           <div th:each="articulo:${listaArticulos}" >
             <div class="card mb-4">
               <div class="card-body">
-                <h2 class="card-title"  th:text="${articulo.titulo}">Post Title</h2>
-                <p class="card-text"  th:text="${articulo.cuerpo}" maxlength="10">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
+                <h2 class="card-title"  th:text="${titulo}">Post Title</h2>
+                <p class="card-text"  th:text="${articulo.cuerpo}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
                 <a href="/home" th:href="|/ver?id=${articulo.id}|" class="btn btn-primary">Leer más &rarr;</a>
               </div>
               <div class="card-footer text-muted"  th:text="${articulo.fecha}">
-                <a href="#"  th:text="${articulo.autor.nombre}">Usuario</a>
+                <a href="#"  th:object="${articulo.autor?.nombre}">Usuario</a>
               </div>
             </div>
           </div>
@@ -114,13 +114,13 @@
             </div>
           </div>
 
-          <!-- Side Widget -->
-          <div class="card my-4">
-            <h5 class="card-header">Side Widget</h5>
-            <div class="card-body">
-              You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
-            </div>
-          </div>
+          <!--&lt;!&ndash; Side Widget &ndash;&gt;-->
+          <!--<div class="card my-4">-->
+            <!--<h5 class="card-header">Side Widget</h5>-->
+            <!--<div class="card-body">-->
+              <!--You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!-->
+            <!--</div>-->
+          <!--</div>-->
 
         </div>
 

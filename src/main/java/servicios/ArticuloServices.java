@@ -26,10 +26,12 @@ public class ArticuloServices {
                 long ID = rs.getLong("id");
                 articulo.setId(ID);
                 articulo.setAutor(UsuarioServices.getUsuario(rs.getLong("usuarioid") ) );
+             //   System.out.println(articulo.getAutor().getUsername());
                 articulo.setComentarios(ComentarioServices.getComentarioByArticuloID(ID));
                 articulo.setEtiquetas(EtiquetaServices.getEtiquetaByArticuloID(ID));
                 String cuerpo = rs.getString("cuerpo");
-                articulo.setCuerpo( cuerpo.substring(0, min(70,cuerpo.length())) + "...");
+                //era 70 el limite pero con 200 se ve mejorsito
+                articulo.setCuerpo( cuerpo.substring(0, min(200,cuerpo.length())) + "...");
                 articulo.setFecha(rs.getDate("fecha"));
                 articulo.setTitulo(rs.getString("titulo"));
                 lista.add(articulo);

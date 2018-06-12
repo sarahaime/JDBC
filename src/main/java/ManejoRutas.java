@@ -1,6 +1,8 @@
 
 import modelos.Articulo;
+import modelos.Usuario;
 import servicios.ArticuloServices;
+import servicios.ComentarioServices;
 import servicios.UsuarioServices;
 
 import static spark.Spark.*;
@@ -38,16 +40,27 @@ public class ManejoRutas {
             return renderThymeleaf(modelo,"/home");
         });
 
-        get("/articulos/", (request, reponse) -> {
-            ArticuloServices as = new ArticuloServices();
-            return as.listaArticulos();
+
+        get("/registrar", (request, response) -> {
+            Usuario u = new Usuario();
+            Map<String, Object> modelo = new HashMap<>();
+            modelo.put("usuario", u);
+
+            return renderThymeleaf(modelo,"/registrar");
         });
 
-        get("/articulos/:id", (request, response)->{
-            long id =Integer.parseInt(request.params("id"));
+
+        get("/ver", (request, response)->{
+            int id = Integer.parseInt(request.queryParams("id"));
             ArticuloServices as = new ArticuloServices();
-            Articulo articulo = as.getArticulo(id);
-            return articulo;
+            Articulo articulo = as.getArticulo((long) id);
+
+            Map<String, Object> modelo = new HashMap<>();
+            modelo.put("articulo", articulo);
+            modelo.put("comentarios", articulo.getComentarios());
+            modelo.put("autor", articulo.getAutor().getNombre());
+            modelo.put("etiquetas", articulo.getEtiquetas());
+            return renderThymeleaf(modelo, "/articulo");
         });
 
         /**
@@ -65,5 +78,51 @@ public class ManejoRutas {
             delete("/eliminar", (request, response) -> "Eliminando Usuario");
         });
 
+        post("/registrar", (request, response) -> {
+            Usuario usuario = new Usuario();
+            usuario.setNombre(request.queryParams("nombre"));
+            usuario.setUsername(request.queryParams("username"));
+            usuario.setPassword(request.queryParams("password"));
+            try {
+                usuario.setAdministrador("on".equalsIgnoreCase(request.queryParams("administrador")));
+            }catch (Exception e){
+            }
+            try {
+                usuario.setAutor("on".equalsIgnoreCase(request.queryParams("autor")));
+            }catch (Exception e){
+            }
+
+            UsuarioServices us = new UsuarioServices();
+            System.out.println(us.crearUsuario(usuario));
+            response.redirect("/registrar");
+            return "";
+        });
+
+
+        post("/comentar", (request, response) -> {
+            ComentarioServices cs = new ComentarioServices();
+            int id = Integer.parseInt(request.queryParams("articuloid"));
+            //usuarioid
+            System.out.println(cs.crearComentario(request.queryParams("comentario"), (long)1, (long)id));
+            response.redirect("/ver?id="+id);
+            return "";
+        });
+
+
     }
+
+    private static Object procesarParametros(Request request, Response response){
+      //  System.out.println("Recibiendo mensaje por el metodo: "+request.requestMethod());
+        Set<String> parametros = request.queryParams();
+        String salida="";
+
+        for(String param : parametros){
+            salida += String.format("Parametro[%s] = %s <br/>", param, request.queryParams(param));
+        }
+
+        return salida;
+    }
+
+
+
 }

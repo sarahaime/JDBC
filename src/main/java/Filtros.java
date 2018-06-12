@@ -30,6 +30,23 @@ public class Filtros { //para aplicar filtros
             }
         });
 
+        before("/registrar*",(request, response) -> {
+            Usuario usuario = request.session(true).attribute("usuario");
+            if(usuario==null || !usuario.isAdministrador()){
+                //parada del request, enviando un codigo.
+                halt(401, "No tiene permisos para acceder");
+            }
+        });
+
+        before("/comentar*",(request, response) -> {
+            Usuario usuario = request.session(true).attribute("usuario");
+            if(usuario==null){
+                //parada del request, enviando un codigo.
+                halt(401, "No tiene permisos para acceder..");
+            }
+        });
+
+
         before("/usuario/eliminar/*",(request, response) -> {
             Usuario usuario = request.session(true).attribute("usuario");
             if(usuario==null || !usuario.isAdministrador()){

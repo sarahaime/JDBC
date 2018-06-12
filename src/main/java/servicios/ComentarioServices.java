@@ -17,7 +17,7 @@ public class ComentarioServices {
         boolean ok =false;
         Connection con = null;
         try {
-            String query = "insert into COMENTARIO (COMENTARIO, USUARIOID, ARTICULOID) values(?,?,?,?,?)";
+            String query = "insert into COMENTARIO (COMENTARIO, USUARIOID, ARTICULOID) values(?,?,?)";
             con = DB.getInstancia().getConexion();
             //
             PreparedStatement prepareStatement = con.prepareStatement(query);

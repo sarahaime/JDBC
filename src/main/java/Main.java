@@ -55,6 +55,8 @@ public class Main {
         //Aplicando los filtros
       //  new Filtros().aplicarFiltros();
 
+        new ManejoExcepciones().manejoExcepciones();
+
     }
 
 
