@@ -1,4 +1,5 @@
 import modelos.Usuario;
+import servicios.ArticuloServices;
 import servicios.BootStrapServices;
 import servicios.DB;
 import servicios.UsuarioServices;
@@ -35,12 +36,15 @@ public class Main {
             administrador.setNombre("Admin");
             administrador.setUsername("admin");
             administrador.setAdministrador(true);
-            administrador.setAutor(false);
+            administrador.setAutor(true);
             administrador.setPassword("admin");
             if( usuarioServices.crearUsuario(administrador)){
                 System.out.println("Usuario administrador creado..");
             }
         }
+
+//        ArticuloServices as = new ArticuloServices();
+//        as.crearArticulo("El agua post", "cuerpesito", 1);
 
         //Seteando el puerto en Heroku
         port(getHerokuAssignedPort());

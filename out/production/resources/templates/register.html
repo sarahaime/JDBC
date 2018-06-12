@@ -17,8 +17,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-
-
 <body class="bg-dark">
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -35,10 +33,16 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/login"><i class="fa fa-fw fa-sign-in"></i>Iniciar sesion</a>
+          <a class="nav-link" href="/login.html"><i class="fa fa-fw fa-sign-in"></i>Iniciar sesion</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/logout"> <i class="fa fa-fw fa-sign-out"></i>Salir</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/registrar.html"></i>Registrar</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/nuevoArticulo.html"></i>Postear</a>
         </li>
       </ul>
     </div>
@@ -71,6 +75,21 @@
               <div class="col-md-6">
                 <label for="exampleConfirmPassword">Confirmar Contraseña</label>
                 <input class="form-control" id="exampleConfirmPassword" type="password" placeholder="Confirmar Contraseña">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                  <label>Administrator: </label>
+                  <input type="radio" name="administrator" value="true">Si
+                  <input type="radio" name="noadministrator" value="false" checked>No
+              </div>
+              <div class="col-md-6">
+                <label>Autor: </label>
+                <input type="radio" name="autor" value="true">Si
+                <input type="radio" name="noautor" value="false" checked>No
               </div>
             </div>
           </div>

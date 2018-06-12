@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.lang.Math.min;
+
 public class ArticuloServices {
     public List<Articulo> listaArticulos() {
         List<Articulo> lista = new ArrayList<>();
@@ -23,10 +25,11 @@ public class ArticuloServices {
                 Articulo articulo = new Articulo();
                 long ID = rs.getLong("id");
                 articulo.setId(ID);
-                articulo.setAutor(UsuarioServices.getUsuario(rs.getLong("autorid") ) );
+                articulo.setAutor(UsuarioServices.getUsuario(rs.getLong("usuarioid") ) );
                 articulo.setComentarios(ComentarioServices.getComentarioByArticuloID(ID));
                 articulo.setEtiquetas(EtiquetaServices.getEtiquetaByArticuloID(ID));
-                articulo.setCuerpo(rs.getString("cuerpo"));
+                String cuerpo = rs.getString("cuerpo");
+                articulo.setCuerpo( cuerpo.substring(0, min(70,cuerpo.length())) + "...");
                 articulo.setFecha(rs.getDate("fecha"));
                 articulo.setTitulo(rs.getString("titulo"));
                 lista.add(articulo);
@@ -61,7 +64,7 @@ public class ArticuloServices {
                 articulo = new Articulo();
                 long ID = rs.getLong("id");
                 articulo.setId(ID);
-                articulo.setAutor(UsuarioServices.getUsuario(rs.getLong("autorid") ) );
+                articulo.setAutor(UsuarioServices.getUsuario(rs.getLong("usuarioid") ) );
                 articulo.setComentarios(ComentarioServices.getComentarioByArticuloID(ID));
                 articulo.setEtiquetas(EtiquetaServices.getEtiquetaByArticuloID(ID));
                 articulo.setCuerpo(rs.getString("cuerpo"));
@@ -82,15 +85,15 @@ public class ArticuloServices {
         return articulo;
     }
 
-    public boolean crearArticulo(String titulo, String cuerpo, long autorID){
+    public boolean crearArticulo(String titulo, String cuerpo, long usuarioid){
         boolean ok =false;
         Connection con = null;
         try {
-            String query = "insert into ARTICULO(autorid,TITULO, CUERPO) values(?,?,?)";
+            String query = "insert into ARTICULO(USUARIOID,TITULO, CUERPO) values(?,?,?)";
             con = DB.getInstancia().getConexion();
             PreparedStatement prepareStatement = con.prepareStatement(query);
             //Antes de ejecutar seteo los parametros
-            prepareStatement.setLong(1, autorID);
+            prepareStatement.setLong(1, usuarioid);
             prepareStatement.setString(2, titulo);
             prepareStatement.setString(3, cuerpo);
 

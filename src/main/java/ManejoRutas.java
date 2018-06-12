@@ -34,10 +34,9 @@ public class ManejoRutas {
             List<Articulo> listaArticulos = as.listaArticulos();
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("listaArticulos", listaArticulos);
+
             return renderThymeleaf(modelo,"/home");
         });
-
-
 
         get("/articulos/", (request, reponse) -> {
             ArticuloServices as = new ArticuloServices();
