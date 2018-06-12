@@ -46,9 +46,12 @@ public class ComentarioServices {
         Connection con = null; //objeto conexion.
         try {
 
-            String query = "select * from COMENTARIO";
+            String query = "select * from COMENTARIO where ARTICULOID = ?";
+
             con = DB.getInstancia().getConexion(); //referencia a la conexion.
+
             PreparedStatement prepareStatement = con.prepareStatement(query);
+            prepareStatement.setLong(1, articuloID);
             ResultSet rs = prepareStatement.executeQuery();
             while(rs.next()){
                 Comentario comentario = new Comentario();

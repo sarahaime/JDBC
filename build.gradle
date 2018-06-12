@@ -22,4 +22,8 @@ dependencies {
 
     compile 'org.thymeleaf:thymeleaf:3.0.5.RELEASE'
 
+    // https://mvnrepository.com/artifact/org.jasypt/jasypt
+    compile group: 'org.jasypt', name: 'jasypt', version: '1.4.1'
+
+
 }

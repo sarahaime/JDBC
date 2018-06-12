@@ -114,25 +114,26 @@ public class ArticuloServices {
 
         return ok;
     }
-/*
+
+
+    //Actualizar los Articulos.
     public boolean actualizarArticulo(Articulo articulo){
         boolean ok =false;
 
         Connection con = null;
         try {
 
-            String query = "update Articulo set ARTICULO=?, USERNAME=?, PASSWORD=?, ADMINISTRADOR=?, AUTOR=? where id = ?";
+            String query = "update Articulo set USUARIOID=?, TITULO=?, CUERPO=? where id = ?";
             con = DB.getInstancia().getConexion();
             //
             PreparedStatement prepareStatement = con.prepareStatement(query);
             //Antes de ejecutar seteo los parametros.
-            prepareStatement.setString(1, articulo.getNombre());
-            prepareStatement.setString(2, articulo.getUsername());
-            prepareStatement.setString(3, articulo.getPassword());
-            prepareStatement.setBoolean(4, articulo.isAdministrador());
-            prepareStatement.setBoolean(5, articulo.isAutor());
+            prepareStatement.setLong(1, articulo.getId());
+            prepareStatement.setString(2, articulo.getTitulo());
+            prepareStatement.setString(3, articulo.getCuerpo());
+
             //Indica el where...
-            prepareStatement.setLong(6, articulo.getId());
+            prepareStatement.setLong(4, articulo.getId());
             //
             int fila = prepareStatement.executeUpdate();
             ok = fila > 0 ;
@@ -150,6 +151,38 @@ public class ArticuloServices {
         return ok;
     }
 
+    //Metodo borrar los Articulos
+    public boolean borrarArticulo(int id){
+        boolean ok =false;
+
+        Connection con = null;
+        try {
+
+            String query = "delete from Articulo where id = ?";
+            con = DB.getInstancia().getConexion();
+            //
+            PreparedStatement prepareStatement = con.prepareStatement(query);
+
+            //Indica el where...
+            prepareStatement.setInt(1, id);
+            //
+            int fila = prepareStatement.executeUpdate();
+            ok = fila > 0 ;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ArticuloServices.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ArticuloServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return ok;
+    }
+
+/*
     public boolean borrarArticulo(int id){
         boolean ok =false;
 

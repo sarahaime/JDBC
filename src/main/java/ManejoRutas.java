@@ -6,10 +6,8 @@ import servicios.ComentarioServices;
 import servicios.UsuarioServices;
 
 import static spark.Spark.*;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
+
+import spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 import java.util.HashMap;
@@ -33,9 +31,20 @@ public class ManejoRutas {
 
         get("/home", (request, response) -> {
             ArticuloServices as = new ArticuloServices();
+            Usuario usuario = new Usuario();
             List<Articulo> listaArticulos = as.listaArticulos();
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("listaArticulos", listaArticulos);
+
+
+            if(request.cookie("usuario") != null){
+                UsuarioServices us = new UsuarioServices();
+                Session session = request.session(true);
+                usuario = us.getUsuario(Integer.parseInt(request.cookie("usuario")));
+                session.attribute("usuario", usuario);
+            }
+
+            modelo.put("registeredUser", usuario);
 
             return renderThymeleaf(modelo,"/home");
         });
@@ -54,7 +63,6 @@ public class ManejoRutas {
             int id = Integer.parseInt(request.queryParams("id"));
             ArticuloServices as = new ArticuloServices();
             Articulo articulo = as.getArticulo((long) id);
-
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("articulo", articulo);
             modelo.put("comentarios", articulo.getComentarios());
@@ -101,12 +109,23 @@ public class ManejoRutas {
 
         post("/comentar", (request, response) -> {
             ComentarioServices cs = new ComentarioServices();
+            Session session = request.session(true);
             int id = Integer.parseInt(request.queryParams("articuloid"));
-            //usuarioid
-            System.out.println(cs.crearComentario(request.queryParams("comentario"), (long)1, (long)id));
+            int usuarioid = (int)( (Usuario)session.attribute("usuario")).getId();
+            cs.crearComentario(request.queryParams("comentario"), (long)usuarioid, (long)id);
             response.redirect("/ver?id="+id);
             return "";
         });
+
+
+        get("/login", (request, response)->{
+            Map<String, Object> modelo = new HashMap<>();
+            return renderThymeleaf(modelo, "/login");
+        });
+
+
+
+
 
 
     }
