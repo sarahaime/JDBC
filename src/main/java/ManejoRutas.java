@@ -65,5 +65,22 @@ public class ManejoRutas {
             delete("/eliminar", (request, response) -> "Eliminando Usuario");
         });
 
+        /**
+         * dentro de API, tendremos el manejo de articulo.
+         * http://localhost:4567/api/articulo/
+         */
+        path("/articulo", () -> {
+            get("/",      (request, response) -> "API Articulo");
+            get("/lista/",      (request, response) ->{
+                ArticuloServices ar = new ArticuloServices();
+                return  ar.listaArticulos();
+            });
+            post("/crear",      (request, response) -> "Agregando Articulo");
+            put("/modificar",     (request, response) -> "Modificando Articulo");
+            delete("/eliminar", (request, response) -> "Eliminando Eliminando");
+        });
+
+
+
     }
 }
