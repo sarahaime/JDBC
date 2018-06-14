@@ -32,17 +32,18 @@ public class ManejoRutas {
         get("/home", (request, response) -> {
             ArticuloServices as = new ArticuloServices();
             Usuario usuario = new Usuario();
+            Session session = request.session(true);
             List<Articulo> listaArticulos = as.listaArticulos();
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("listaArticulos", listaArticulos);
 
-
             if(request.cookie("usuario") != null){
                 UsuarioServices us = new UsuarioServices();
-                Session session = request.session(true);
                 usuario = us.getUsuario(Integer.parseInt(request.cookie("usuario")));
                 session.attribute("usuario", usuario);
             }
+
+            if(session.attribute("usuario") != null) usuario = session.attribute("usuario");
 
             modelo.put("registeredUser", usuario);
 

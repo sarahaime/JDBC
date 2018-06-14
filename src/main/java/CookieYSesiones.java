@@ -23,17 +23,11 @@ public class CookieYSesiones {
             Session session=request.session(true);
             session.invalidate();
             response.cookie("/", "usuario", "hola_mundo", 0, false);
-
-
             response.redirect("/home");
             return "Adios amiguito";
         });
 
-        /**
-         * Registra elementos en el ambito web de sesion.
-         */
-
-        //HACER UNA COOKIE
+        //HACER UNA COOKIE y UNA SESSION
       post("/autenticar", (request, response)->{
             Session session = request.session(true);
             UsuarioServices us = new UsuarioServices();
@@ -46,9 +40,11 @@ public class CookieYSesiones {
 
             try {
                 if("on".equalsIgnoreCase(request.queryParams("recordar"))){
-                    response.cookie("/", "usuario", Integer.toString((int)usuario.getId()), 7*24*60*60*1000, false);  }
+                    response.cookie("/", "usuario", Integer.toString((int)usuario.getId()), 7*24*60*60*1000, false);
+                }else{
+                    response.cookie("/", "usuario", Integer.toString((int)usuario.getId()), 0, false);
+                }
             }catch (Exception e){  }
-
 
           session.attribute("usuario", usuario);
           response.redirect("/home");
