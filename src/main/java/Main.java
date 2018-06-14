@@ -1,8 +1,6 @@
+import modelos.Etiqueta;
 import modelos.Usuario;
-import servicios.ArticuloServices;
-import servicios.BootStrapServices;
-import servicios.DB;
-import servicios.UsuarioServices;
+import servicios.*;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -45,6 +43,17 @@ public class Main {
 
 //        ArticuloServices as = new ArticuloServices();
 //        as.crearArticulo("El agua post", "cuerpesito", 1);
+
+//        EtiquetaServices es = new EtiquetaServices();
+//        es.crearEtiqueta("COCINA");
+//        es.crearEtiqueta("PROGRAMACION");
+//        es.crearEtiqueta("YOLO");
+//        es.crearEtiqueta("FOTOGRAFIA");
+//        es.crearEtiqueta("TECNOLOGIA");
+//        es.crearEtiqueta("REDES");
+//        es.crearEtiqueta("HTML");
+//        es.crearEtiqueta("FINANZAS");
+//        es.crearEtiqueta("RESTAURANTES");
 
         //Seteando el puerto en Heroku
         port(getHerokuAssignedPort());

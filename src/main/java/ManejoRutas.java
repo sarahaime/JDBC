@@ -31,22 +31,10 @@ public class ManejoRutas {
 
         get("/home", (request, response) -> {
             ArticuloServices as = new ArticuloServices();
-            Usuario usuario = new Usuario();
-            Session session = request.session(true);
             List<Articulo> listaArticulos = as.listaArticulos();
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("listaArticulos", listaArticulos);
-
-            if(request.cookie("usuario") != null){
-                UsuarioServices us = new UsuarioServices();
-                usuario = us.getUsuario(Integer.parseInt(request.cookie("usuario")));
-                session.attribute("usuario", usuario);
-            }
-
-            if(session.attribute("usuario") != null) usuario = session.attribute("usuario");
-
-            modelo.put("registeredUser", usuario);
-
+            modelo.put("registeredUser", getLogUser(request));
             return renderThymeleaf(modelo,"/home");
         });
 
@@ -55,36 +43,9 @@ public class ManejoRutas {
             Usuario u = new Usuario();
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("usuario", u);
+            modelo.put("registeredUser", getLogUser(request));
 
             return renderThymeleaf(modelo,"/registrar");
-        });
-
-
-        get("/ver", (request, response)->{
-            int id = Integer.parseInt(request.queryParams("id"));
-            ArticuloServices as = new ArticuloServices();
-            Articulo articulo = as.getArticulo((long) id);
-            Map<String, Object> modelo = new HashMap<>();
-            modelo.put("articulo", articulo);
-            modelo.put("comentarios", articulo.getComentarios());
-            modelo.put("autor", articulo.getAutor().getNombre());
-            modelo.put("etiquetas", articulo.getEtiquetas());
-            return renderThymeleaf(modelo, "/articulo");
-        });
-
-        /**
-         * dentro de API, tendremos el manejo de usuario.
-         * http://localhost:4567/api/usuario/
-         */
-        path("/usuario", () -> {
-            get("/",      (request, response) -> "API Usuario");
-            get("/lista/",      (request, response) ->{
-                UsuarioServices us = new UsuarioServices();
-                return  us.listaUsuarios();
-            });
-            post("/crear",      (request, response) -> "Agregando Usuario");
-            put("/modificar",     (request, response) -> "Modificando Usuario");
-            delete("/eliminar", (request, response) -> "Eliminando Usuario");
         });
 
         post("/registrar", (request, response) -> {
@@ -102,10 +63,45 @@ public class ManejoRutas {
             }
 
             UsuarioServices us = new UsuarioServices();
-            System.out.println(us.crearUsuario(usuario));
+            us.crearUsuario(usuario);
+
             response.redirect("/registrar");
             return "";
         });
+
+
+        get("/login", (request, response)->{
+            Map<String, Object> modelo = new HashMap<>();
+            return renderThymeleaf(modelo, "/login");
+        });
+
+        get("/ver", (request, response)->{
+            int id = Integer.parseInt(request.queryParams("id"));
+            ArticuloServices as = new ArticuloServices();
+            Articulo articulo = as.getArticulo((long) id);
+            Map<String, Object> modelo = new HashMap<>();
+            modelo.put("articulo", articulo);
+            modelo.put("comentarios", articulo.getComentarios());
+            modelo.put("autor", articulo.getAutor().getNombre());
+            modelo.put("etiquetas", articulo.getEtiquetas());
+            modelo.put("registeredUser", getLogUser(request));
+
+            return renderThymeleaf(modelo, "/articulo");
+        });
+
+        /**
+         * por si no ponen /home
+         */
+        get("",  (request, response) -> {
+            response.redirect("/home");
+            return "";
+        });
+
+        get("/",  (request, response) -> {
+            response.redirect("/home");
+            return "";
+        });
+
 
 
         post("/comentar", (request, response) -> {
@@ -118,13 +114,43 @@ public class ManejoRutas {
             return "";
         });
 
-
-        get("/login", (request, response)->{
-            Map<String, Object> modelo = new HashMap<>();
-            return renderThymeleaf(modelo, "/login");
+        post("/borrarArticulo", (request, response) -> {
+            ArticuloServices as = new ArticuloServices();
+            Session session = request.session(true);
+            int articuloid = Integer.parseInt(request.queryParams("articuloid"));
+            int usuarioid = (int)( (Usuario)session.attribute("usuario")).getId();
+            as.borrarArticulo(articuloid, usuarioid);
+            response.redirect("/home");
+            return "";
         });
 
+        post("/agregarArticulo", (request, response) -> {
+            ArticuloServices as = new ArticuloServices();
+            Session session = request.session(true);
 
+            int usuarioid = (int)( (Usuario)session.attribute("usuario")).getId();
+
+            String titulo = request.queryParams("titulo");
+            String cuerpo = request.queryParams("cuerpo");
+
+            String tags = request.queryParams("etiquetas");
+
+            System.out.println(tags);
+            as.crearArticulo(titulo, cuerpo, usuarioid);
+
+            response.redirect("/home");
+            return "";
+        });
+
+        get("/editarArticulo", (request, response)->{
+            int id = Integer.parseInt(request.queryParams("id"));
+            ArticuloServices as = new ArticuloServices();
+            Articulo articulo = as.getArticulo((long) id);
+            Map<String, Object> modelo = new HashMap<>();
+            modelo.put("registeredUser", getLogUser(request));
+            modelo.put("articulo", articulo);
+            return renderThymeleaf(modelo, "/editarArticuloForm");
+        });
 
 
 
@@ -141,6 +167,24 @@ public class ManejoRutas {
         }
 
         return salida;
+    }
+
+    private Usuario getLogUser(Request request){
+        Usuario usuario = new Usuario();
+        UsuarioServices us = new UsuarioServices();
+        Session session = request.session(true);
+        if(request.cookie("usuario") != null){
+            usuario = us.getUsuario(Integer.parseInt(request.cookie("usuario")));
+            if( usuario.getPassword().equals(request.cookie("usuario")) ) {
+                session.attribute("usuario", usuario);
+            }
+        }else{
+            if( session.attribute("usuario") instanceof Usuario)
+          usuario = us.getUsuarioByUserName(((Usuario)session.attribute("usuario")).getUsername());
+        }
+
+
+        return usuario;
     }
 
 

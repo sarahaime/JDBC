@@ -363,7 +363,7 @@ body.sidenav-toggled .navbar-sidenav-tooltip.show {
   }
   #mainNav.navbar-dark .navbar-collapse .navbar-sidenav li.active a {
     color: white !important;
-    background-color: #495057;
+    background-color: #562557;
   }
   #mainNav.navbar-dark .navbar-collapse .navbar-sidenav li.active a:focus, #mainNav.navbar-dark .navbar-collapse .navbar-sidenav li.active a:hover {
     color: white;

@@ -41,6 +41,8 @@ public class CookieYSesiones {
             try {
                 if("on".equalsIgnoreCase(request.queryParams("recordar"))){
                     response.cookie("/", "usuario", Integer.toString((int)usuario.getId()), 7*24*60*60*1000, false);
+                    response.cookie("/", "pass", usuario.getPassword(), 7*24*60*60*1000, false);
+
                 }else{
                     response.cookie("/", "usuario", Integer.toString((int)usuario.getId()), 0, false);
                 }

@@ -152,19 +152,21 @@ public class ArticuloServices {
     }
 
     //Metodo borrar los Articulos
-    public boolean borrarArticulo(int id){
+    public boolean borrarArticulo(long id, long usuarioid){
         boolean ok =false;
 
         Connection con = null;
         try {
-
-            String query = "delete from Articulo where id = ?";
+            //que sea quien lo creo, o un administrador
+            String query = "delete from Articulo where id = ? and (USUARIOID = ? or exists (select* from USUARIO where id = ? and administrador)) ";
             con = DB.getInstancia().getConexion();
             //
             PreparedStatement prepareStatement = con.prepareStatement(query);
 
             //Indica el where...
-            prepareStatement.setInt(1, id);
+            prepareStatement.setLong(1, id);
+            prepareStatement.setLong(2, usuarioid);
+            prepareStatement.setLong(3, usuarioid);
             //
             int fila = prepareStatement.executeUpdate();
             ok = fila > 0 ;
@@ -181,6 +183,8 @@ public class ArticuloServices {
 
         return ok;
     }
+
+
 
 /*
     public boolean borrarArticulo(int id){

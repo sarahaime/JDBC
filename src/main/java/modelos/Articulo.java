@@ -12,6 +12,10 @@ public class Articulo {
     private List<Comentario> comentarios;
     private List<Etiqueta> etiquetas;
 
+    public Articulo() {
+
+    }
+
     public long getId() {
         return id;
     }
