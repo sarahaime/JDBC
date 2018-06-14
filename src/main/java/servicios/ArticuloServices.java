@@ -115,7 +115,6 @@ public class ArticuloServices {
         return ok;
     }
 
-
     //Actualizar los Articulos.
     public boolean actualizarArticulo(Articulo articulo){
         boolean ok =false;
@@ -167,6 +166,7 @@ public class ArticuloServices {
             prepareStatement.setLong(1, id);
             prepareStatement.setLong(2, usuarioid);
             prepareStatement.setLong(3, usuarioid);
+
             //
             int fila = prepareStatement.executeUpdate();
             ok = fila > 0 ;
@@ -184,9 +184,6 @@ public class ArticuloServices {
         return ok;
     }
 
-
-
-/*
     public boolean borrarArticulo(int id){
         boolean ok =false;
 
@@ -215,6 +212,7 @@ public class ArticuloServices {
         }
 
         return ok;
-    }*/
+    }
+
 
 }

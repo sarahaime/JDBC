@@ -1,5 +1,9 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+=======
+<html lang="en">
+>>>>>>> origin/master
 
 <head>
   <meta charset="utf-8">
@@ -18,20 +22,64 @@
 </head>
 
 <body class="bg-dark">
+<<<<<<< HEAD
+=======
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Blog</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/home">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/login.html"><i class="fa fa-fw fa-sign-in"></i>Iniciar sesion</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout"> <i class="fa fa-fw fa-sign-out"></i>Salir</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/registrar.html"></i>Registrar</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/nuevoArticulo.html"></i>Postear</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+>>>>>>> origin/master
 
 <div class="container">
     <div class="card card-register mx-auto mt-5">
       <div class="card-header">Registrar una cuenta</div>
       <div class="card-body">
+<<<<<<< HEAD
         <form method="post">
           <div class="form-group">
             <div class="form-row">
                 <label for="exampleInputName">Nombre</label>
                 <input class="form-control" id="exampleInputName" name="nombre" type="text" aria-describedby="nameHelp" placeholder="Nombre" required>
+=======
+        <form>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                <label for="exampleInputName">Nombre</label>
+                <input class="form-control" id="exampleInputName" type="text" aria-describedby="nameHelp" placeholder="Enter first name">
+              </div>
+>>>>>>> origin/master
             </div>
           </div>
           <div class="form-group">
             <label for="exampleInputEmail1">Usuario</label>
+<<<<<<< HEAD
             <input class="form-control" id="exampleInputEmail1" name="username" placeholder="Nombre de usuario" required>
           </div>
           <div class="form-group">
@@ -53,6 +101,38 @@
           <div class="text-center">
           <button class="btn btn-primary btn-block" type="submit"> Registrar </button>
           </div>
+=======
+            <input class="form-control" id="exampleInputEmail1" type="email" aria-describedby="emailHelp" placeholder="Enter email">
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                <label for="exampleInputPassword1">Contraseña</label>
+                <input class="form-control" id="exampleInputPassword1" type="password" placeholder="Contraseña">
+              </div>
+              <div class="col-md-6">
+                <label for="exampleConfirmPassword">Confirmar Contraseña</label>
+                <input class="form-control" id="exampleConfirmPassword" type="password" placeholder="Confirmar Contraseña">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                  <label>Administrator: </label>
+                  <input type="radio" name="administrator" value="true">Si
+                  <input type="radio" name="noadministrator" value="false" checked>No
+              </div>
+              <div class="col-md-6">
+                <label>Autor: </label>
+                <input type="radio" name="autor" value="true">Si
+                <input type="radio" name="noautor" value="false" checked>No
+              </div>
+            </div>
+          </div>
+          <a class="btn btn-primary btn-block" href="/home">Registra</a>
+>>>>>>> origin/master
         </form>
         <div class="text-center">
           <a class="d-block small mt-3" href="/home">Volver</a>
