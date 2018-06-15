@@ -51,17 +51,17 @@ public class Filtros { //para aplicar filtros
             Articulo articulo = as.getArticulo((long) id);
             if(articulo.getAutor().getId() !=  (int)( (Usuario)session.attribute("usuario")).getId()){
                 response.redirect("/login");
-                halt(200, "No tiene permisos para acceder..");
+                halt(200, "No tiene permisos para editar, solo el autor..");
             }
         });
 
-//        before("/borrarArticulo",(request, response) -> {
-//            Usuario usuario = request.session(true).attribute("usuario");
-//            if(usuario==null || (  !usuario.isAdministrador() &&  !usuario.isAutor()  )){
-//                //parada del request, enviando un codigo.
-//                halt(401, "No tiene permisos para acceder");
-//            }
-//        });
+        before("/borrarArticulo",(request, response) -> {
+            Usuario usuario = request.session(true).attribute("usuario");
+            if(usuario==null || (  !usuario.isAdministrador() &&  !usuario.isAutor()  )){
+                //parada del request, enviando un codigo.
+                halt(401, "No tiene permisos para acceder");
+            }
+        });
 
         before("/comentar",(request, response) -> {
             Usuario usuario = request.session(true).attribute("usuario");

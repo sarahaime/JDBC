@@ -15,7 +15,6 @@ import static spark.Spark.post;
 public class CookieYSesiones {
 
     public void cookieSesiones(){
-
         /**
          * http://localhost:4567/logout
          */
@@ -42,9 +41,9 @@ public class CookieYSesiones {
                 if("on".equalsIgnoreCase(request.queryParams("recordar"))){
                     response.cookie("/", "usuario", Integer.toString((int)usuario.getId()), 7*24*60*60*1000, false);
                     response.cookie("/", "pass", usuario.getPassword(), 7*24*60*60*1000, false);
-
                 }else{
                     response.cookie("/", "usuario", Integer.toString((int)usuario.getId()), 0, false);
+                    response.cookie("/", "pass", Integer.toString((int)usuario.getId()), 0, false);
                 }
             }catch (Exception e){  }
 

@@ -1,5 +1,6 @@
 
 import modelos.Articulo;
+import modelos.Etiqueta;
 import modelos.Usuario;
 import servicios.ArticuloServices;
 import servicios.ComentarioServices;
@@ -31,13 +32,24 @@ public class ManejoRutas {
 
         get("/home", (request, response) -> {
             ArticuloServices as = new ArticuloServices();
+            Usuario usuario = new Usuario();
+            Session session = request.session(true);
             List<Articulo> listaArticulos = as.listaArticulos();
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("listaArticulos", listaArticulos);
-            modelo.put("registeredUser", getLogUser(request));
+
+            if(request.cookie("usuario") != null){
+                UsuarioServices us = new UsuarioServices();
+                usuario = us.getUsuario(Integer.parseInt(request.cookie("usuario")));
+                session.attribute("usuario", usuario);
+            }
+
+            if(session.attribute("usuario") != null) usuario = session.attribute("usuario");
+
+            modelo.put("registeredUser", usuario);
+
             return renderThymeleaf(modelo,"/home");
         });
-
 
         get("/registrar", (request, response) -> {
             Usuario u = new Usuario();
@@ -135,8 +147,7 @@ public class ManejoRutas {
 
             String tags = request.queryParams("etiquetas");
 
-            System.out.println(tags);
-            as.crearArticulo(titulo, cuerpo, usuarioid);
+            as.crearArticulo(titulo, cuerpo, usuarioid, tags);
 
             response.redirect("/home");
             return "";
@@ -149,7 +160,29 @@ public class ManejoRutas {
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("registeredUser", getLogUser(request));
             modelo.put("articulo", articulo);
+            String etiqueta = "";
+
+            for(Etiqueta et: articulo.getEtiquetas()){
+                etiqueta += et.getEtiqueta() + ", ";
+            }
+
+            modelo.put("etiqueta", etiqueta);
+
             return renderThymeleaf(modelo, "/editarArticuloForm");
+        });
+
+        post("/editarArticulo", (request, response) -> {
+            ArticuloServices as = new ArticuloServices();
+            String titulo = request.queryParams("titulo");
+            String cuerpo = request.queryParams("cuerpo");
+            String tags = request.queryParams("etiquetas");
+            long id = (long) Integer.parseInt( request.queryParams("id"));
+
+            System.out.println(tags);
+            as.actualizarArticulo(titulo, cuerpo, id, tags);
+
+            response.redirect("/home");
+            return "";
         });
 
 
@@ -170,18 +203,19 @@ public class ManejoRutas {
     }
 
     private Usuario getLogUser(Request request){
-        Usuario usuario = new Usuario();
-        UsuarioServices us = new UsuarioServices();
-        Session session = request.session(true);
-        if(request.cookie("usuario") != null){
-            usuario = us.getUsuario(Integer.parseInt(request.cookie("usuario")));
-            if( usuario.getPassword().equals(request.cookie("usuario")) ) {
+
+            Usuario usuario = new Usuario();
+            Session session = request.session(true);
+
+            if(request.cookie("usuario") != null){
+                UsuarioServices us = new UsuarioServices();
+                usuario = us.getUsuario(Integer.parseInt(request.cookie("usuario")));
                 session.attribute("usuario", usuario);
             }
-        }else{
-            if( session.attribute("usuario") instanceof Usuario)
-          usuario = us.getUsuarioByUserName(((Usuario)session.attribute("usuario")).getUsername());
-        }
+
+            if(session.attribute("usuario") != null) usuario = session.attribute("usuario");
+
+
 
 
         return usuario;

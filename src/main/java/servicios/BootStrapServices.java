@@ -55,20 +55,15 @@ public class BootStrapServices {
         String tablaEtiqueta = "CREATE TABLE IF NOT EXISTS ETIQUETA\n" +
                 "(\n" +
                 "  ID BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL,\n" +
-                "  ETIQUETA VARCHAR(80) NOT NULL,\n" +
-                ");";
-
-        String relacionEtiquetaArticulo = "CREATE TABLE IF NOT EXISTS ETIQUETA_ARTICULO\n" +
-                "(\n" +
-                "  ETIQUETAID BIGINT NOT NULL,\n" +
+                "  ETIQUETA TEXT NOT NULL,\n" +
                 "  ARTICULOID BIGINT NOT NULL\n" +
                 ");";
+
 
         statement.execute(tablaUsuario);
         statement.execute(tablaEtiqueta);
         statement.execute(tablaComentario);
         statement.execute(tablaArticulo);
-        statement.execute(relacionEtiquetaArticulo);
         statement.close();
         //CIERRO, MUY IMPORTANTE
         con.close();
