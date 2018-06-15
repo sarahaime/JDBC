@@ -39,7 +39,7 @@ public class EtiquetaServices{
         List<Etiqueta> lista = new ArrayList<>();
         Connection con = null; //objeto conexion.
         try {
-            String query = "select * from ETIQUETA_ARTICULO where ARTICULOID = ?";
+            String query = "select * from ETIQUETA  where ARTICULOID = ?";
             con = DB.getInstancia().getConexion();
             PreparedStatement prepareStatement = con.prepareStatement(query);
             //Antes de ejecutar seteo los parametros.
@@ -67,7 +67,7 @@ public class EtiquetaServices{
         boolean ok =false;
         Connection con = null;
         try {
-            String query = "insert into ETIQUETA_ARTICULO (ETIQUETAID, ARTICULOID) values(?, ?)";
+            String query = "insert into ETIQUETA (ETIQUETAID, ARTICULOID) values(?, ?)";
             con = DB.getInstancia().getConexion();
             PreparedStatement prepareStatement = con.prepareStatement(query);
             //Antes de ejecutar seteo los parametros

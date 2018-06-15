@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>Blog Post</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="vendor/bootstrap/css/blog-post.css" rel="stylesheet">
+
+</head>
+
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#"><h1> Tu Blog</h1></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/home">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item" th:if="${registeredUser.id}">
+                    <a class="nav-link" href="/logout"> <i class="fa fa-fw fa-sign-out"></i>Salir</a>
+                </li>
+                <li class="nav-item"  th:unless="${registeredUser.id}">
+                    <a class="nav-link" href="/login.html"><i class="fa fa-fw fa-sign-in"></i>Iniciar sesion</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/registrar" th:if="${registeredUser.administrador}"></i>Registrar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/articuloForm.html" th:if="${registeredUser.autor}"></i>Postear</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:blanchedalmond" href="/home" th:href="|/articulos?usuarioid=${registeredUser.id}|"  th:text="${registeredUser.username}" ></i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-2">
+        </div>
+        <!-- Post Content Column -->
+        <div class="col-lg-8">
+            <!-- post Form -->
+            <div class="card my-4">
+                <h5 class="card-header">Agregar Artículo</h5>
+                <div class="card-body">
+                    <form method="post" action="/agregarArticulo">
+                        <div class="form-group">
+                            <label> Título: </label>
+                            <textarea class="form-control" rows="1" name="titulo"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Cuerpo </label>
+                            <textarea class="form-control" rows="5" name="cuerpo"></textarea>
+                        </div>
+                        <input type="hidden" name="articuloid" th:value="${articulo.id}">
+
+                        <div class="form-group">
+                            <label> Etiquetas: </label>
+                            <textarea class="form-control" rows="1" name="etiquetas"></textarea>
+                        </div>
+                        <input type="hidden" name="usuarioid" th:value="${registeredUser.id}">
+                        <div align="right">
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-2">
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Internet Avanzado 2018</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

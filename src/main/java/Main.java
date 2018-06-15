@@ -1,7 +1,7 @@
+import modelos.Etiqueta;
 import modelos.Usuario;
-import servicios.BootStrapServices;
-import servicios.DB;
-import servicios.UsuarioServices;
+
+import servicios.*;
 
 
 import java.sql.SQLException;
@@ -29,7 +29,7 @@ public class Main {
         UsuarioServices usuarioServices = new UsuarioServices();
         if(usuarioServices.listaUsuarios().size() < 1){
             Usuario administrador = new Usuario();
-            administrador.setNombre("Admin");
+            administrador.setNombre("Nombre del Administrador");
             administrador.setUsername("admin");
             administrador.setAdministrador(true);
             administrador.setAutor(true);
@@ -39,8 +39,6 @@ public class Main {
             }
         }
 
-//        ArticuloServices as = new ArticuloServices();
-//        as.crearArticulo("El agua post", "cuerpesito", 1);
 
         //Seteando el puerto en Heroku
         port(getHerokuAssignedPort());
@@ -49,7 +47,11 @@ public class Main {
         new ManejoRutas().rutas();
 
         //Aplicando los filtros
-      //  new Filtros().aplicarFiltros();
+        new Filtros().aplicarFiltros();
+
+        new ManejoExcepciones().manejoExcepciones();
+
+        new CookieYSesiones().cookieSesiones();
 
     }
 

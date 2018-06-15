@@ -1,6 +1,7 @@
 package servicios;
 
 import modelos.Usuario;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -84,8 +85,48 @@ public class UsuarioServices {
         return usuario;
     }
 
+    public Usuario getUsuarioByUserName(String username) {
+        Usuario usuario = null;
+        Connection con = null;
+        try {
+            //utilizando los comodines (?)...
+            String query = "select * from Usuario where USERNAME = ?";
+            con = DB.getInstancia().getConexion();
+            //
+            PreparedStatement prepareStatement = con.prepareStatement(query);
+            //Antes de ejecutar seteo los parametros.
+            prepareStatement.setString(1, username);
+            //Ejecuto...
+            ResultSet rs = prepareStatement.executeQuery();
+            while(rs.next()){
+                usuario = new Usuario();
+                usuario.setId(rs.getLong("id"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setUsername(rs.getString("username"));
+                usuario.setPassword(rs.getString("password"));
+                usuario.setAdministrador(rs.getBoolean("administrador"));
+                usuario.setAutor(rs.getBoolean("autor"));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioServices.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return usuario;
+    }
+
     public boolean crearUsuario(Usuario usuario){
         boolean ok =false;
+        //para guardar la contraseña cifrada
+        StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+        String encryptedPassword = passwordEncryptor.encryptPassword(usuario.getPassword());
+
         Connection con = null;
         try {
 
@@ -96,7 +137,7 @@ public class UsuarioServices {
             //Antes de ejecutar seteo los parametros
             prepareStatement.setString(1, usuario.getNombre());
             prepareStatement.setString(2, usuario.getUsername());
-            prepareStatement.setString(3, usuario.getPassword());
+            prepareStatement.setString(3, encryptedPassword);
             prepareStatement.setBoolean(4, usuario.isAdministrador());
             prepareStatement.setBoolean(5, usuario.isAutor());
             //
@@ -179,6 +220,21 @@ public class UsuarioServices {
         }
 
         return ok;
+    }
+
+    public Usuario autenticarUsuario(String userName, String pass ){
+        Usuario usuario = getUsuarioByUserName(userName);
+
+        if( usuario == null ){ return  null; }
+
+        System.out.println(usuario.getPassword());
+
+        StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+        if (passwordEncryptor.checkPassword(pass, usuario.getPassword())) {
+            return usuario;
+        } else {
+            return null;
+        }
     }
 
 }

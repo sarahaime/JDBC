@@ -22,7 +22,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Blog</a>
+      <a class="navbar-brand" href="#"><h2>Tu Blog</h2></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -33,23 +33,20 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" th:if="${registeredUser.id}">
+            <a class="nav-link" href="/logout"> <i class="fa fa-fw fa-sign-out"></i>Salir</a>
+          </li>
+          <li class="nav-item"  th:unless="${registeredUser.id}">
             <a class="nav-link" href="/login.html"><i class="fa fa-fw fa-sign-in"></i>Iniciar sesion</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/logout"> <i class="fa fa-fw fa-sign-out"></i>Salir</a>
+            <a class="nav-link" href="/registrar" th:if="${registeredUser.administrador}"></i>Registrar</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/agregarArticulos.html"></i>Agregar Articulo</a>
+            <a class="nav-link" href="/articuloForm.html" th:if="${registeredUser.autor}"></i>Postear</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/editarArticulos.html"></i>Editar Articulo</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/registrar.html"></i>Registrar</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/nuevoArticulo.html"></i>Postear</a>
+            <a class="nav-link" style="color:blanchedalmond" href="/home" th:href="|/articulos?usuarioid=${registeredUser.id}|"  th:text="${registeredUser.username}" ></i></a>
           </li>
         </ul>
       </div>
@@ -64,7 +61,7 @@
         <!-- Blog Entries Column -->
         <div class="col-md-8">
 
-          <h1 class="my-4">El Blog
+          <h1 class="my-4">
             <small>La libertad está en leer</small>
           </h1>
 
@@ -73,11 +70,20 @@
             <div class="card mb-4">
               <div class="card-body">
                 <h2 class="card-title"  th:text="${articulo.titulo}">Post Title</h2>
-                <p class="card-text"  th:text="${articulo.cuerpo}" maxlength="10">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
-                <a href="/home" th:href="|/ver?id=${articulo.id}|" class="btn btn-primary">Leer más &rarr;</a>
+                <p class="card-text"  th:text="${articulo.cuerpo}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
+                <div align="right" th:if="${registeredUser.administrador} OR ${articulo.autor.id} == ${registeredUser.id}">
+                  <form method="post" action="/borrarArticulo">
+                    <input type="hidden" name="articuloid" th:value="${articulo.id}">
+                    <a href="/home" th:href="|/ver?id=${articulo.id}|" class="btn btn-primary">Leer más</a>
+                    <a th:if="${articulo.autor.id} == ${registeredUser.id}" href="/home" th:href="|/editarArticulo?id=${articulo.id}|" class="btn btn-info">Editar</a>
+                    <button class="btn btn-danger" type="submit">x</button>
+                  </form>
+                </div>
+                <div align="right"th:unless="${registeredUser.administrador}  OR ${articulo.autor.id} == ${registeredUser.id}">
+                  <a href="/home" th:href="|/ver?id=${articulo.id}|" class="btn btn-primary">Leer más &rarr;</a>
+                </div>
               </div>
-              <div class="card-footer text-muted"  th:text="${articulo.fecha}">
-                <a href="#"  th:text="${articulo.autor.nombre}">Usuario</a>
+              <div class="card-footer" th:text="${articulo.autor.nombre} + ' ' + ${articulo.fecha}">
               </div>
             </div>
           </div>
@@ -120,13 +126,13 @@
             </div>
           </div>
 
-          <!-- Side Widget -->
-          <div class="card my-4">
-            <h5 class="card-header">Side Widget</h5>
-            <div class="card-body">
-              You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
-            </div>
-          </div>
+          <!--&lt;!&ndash; Side Widget &ndash;&gt;-->
+          <!--<div class="card my-4">-->
+            <!--<h5 class="card-header">Side Widget</h5>-->
+            <!--<div class="card-body">-->
+              <!--You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!-->
+            <!--</div>-->
+          <!--</div>-->
 
         </div>
 

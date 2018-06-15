@@ -17,7 +17,7 @@ public class ComentarioServices {
         boolean ok =false;
         Connection con = null;
         try {
-            String query = "insert into COMENTARIO (COMENTARIO, USUARIOID, ARTICULOID) values(?,?,?,?,?)";
+            String query = "insert into COMENTARIO (COMENTARIO, USUARIOID, ARTICULOID) values(?,?,?)";
             con = DB.getInstancia().getConexion();
             //
             PreparedStatement prepareStatement = con.prepareStatement(query);
@@ -46,9 +46,12 @@ public class ComentarioServices {
         Connection con = null; //objeto conexion.
         try {
 
-            String query = "select * from COMENTARIO";
+            String query = "select * from COMENTARIO where ARTICULOID = ?";
+
             con = DB.getInstancia().getConexion(); //referencia a la conexion.
+
             PreparedStatement prepareStatement = con.prepareStatement(query);
+            prepareStatement.setLong(1, articuloID);
             ResultSet rs = prepareStatement.executeQuery();
             while(rs.next()){
                 Comentario comentario = new Comentario();
